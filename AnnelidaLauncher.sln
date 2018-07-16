@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnnelidaLauncher", "AnnelidaLauncher\AnnelidaLauncher.csproj", "{51BC08C3-55B6-40B8-87A5-EE9917038550}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnnelidaLauncherTests", "UnitTestProject1\AnnelidaLauncherTests.csproj", "{F81A94CF-DAB6-4322-9F27-6830ECF3E7AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51BC08C3-55B6-40B8-87A5-EE9917038550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51BC08C3-55B6-40B8-87A5-EE9917038550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51BC08C3-55B6-40B8-87A5-EE9917038550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51BC08C3-55B6-40B8-87A5-EE9917038550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F81A94CF-DAB6-4322-9F27-6830ECF3E7AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F81A94CF-DAB6-4322-9F27-6830ECF3E7AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F81A94CF-DAB6-4322-9F27-6830ECF3E7AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F81A94CF-DAB6-4322-9F27-6830ECF3E7AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C834746-9A17-433D-94B2-3FF37AF8F2A0}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,30 @@
+﻿<Window x:Class="AnnelidaLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AnnelidaLauncher"
+        xmlns:vm="clr-namespace:AnnelidaLauncher.ViewModel"
+        mc:Ignorable="d"
+        Title="Annelida Launcher" Height="140" Width="525">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="5">
+                <TextBlock Margin="1" Text="Caminho Mongo: "></TextBlock>
+                <TextBlock Margin="1" Text="Caminho Dispacher: "></TextBlock>
+                <TextBlock Margin="1" Text="Caminho 3D: "></TextBlock>
+                <TextBlock Margin="1" Text="Caminho 2D: "></TextBlock>
+            </StackPanel>
+            <StackPanel Margin="5" Grid.Column="1">
+                <TextBlock Margin="1" Text="{Binding MongoPath}"></TextBlock>
+                <TextBlock Margin="1" Text="{Binding DispPath}"></TextBlock>
+                <TextBlock Margin="1" Text="{Binding ThreeDPath}"></TextBlock>
+                <TextBlock Margin="1" Text="{Binding TwoDPath}"></TextBlock>
+            </StackPanel>
+        </Grid>
+     </Grid>
+</Window>
