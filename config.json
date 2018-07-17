@@ -1,0 +1,6 @@
+{
+	"MongoAddress":"D:\\Software\\MongoDB\\Server\\3.4\\bin\\mongod.exe",
+	"DispatcherAddress":"D:\\Franz\\Development\\Git\\AnnelidaDispatcher\\AnnelidaDispatcher\\bin\\Debug\\AnnelidaDispatcher.exe",
+	"Annelida3DAddress":"3d",
+	"Annelida2DAddress":"2d"
+}

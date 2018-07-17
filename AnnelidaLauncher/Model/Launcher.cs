@@ -12,18 +12,22 @@ namespace AnnelidaLauncher.Model
 {
     class Launcher
     {
-        private readonly List<Process> annelidaProcesses;
+        private readonly HashSet<MonitoredProcess> annelidaProcesses;
         private StatsPerformanceMonitor statsPerformanceMonitor;
+        private WatchDogListener watchDogListener;
 
         public ConfigurationFile ConfigurationFile { get; private set; }
         public Launcher()
         {
-            annelidaProcesses = new List<Process>();
+            annelidaProcesses = new HashSet<MonitoredProcess>();
 
             if (LoadConfigFile())
             {
+               
                 LaunchApplications(ConfigurationFile);
                 statsPerformanceMonitor = new StatsPerformanceMonitor(annelidaProcesses);
+                watchDogListener = new WatchDogListener(9998, annelidaProcesses);
+
             }
         }
 
@@ -49,55 +53,15 @@ namespace AnnelidaLauncher.Model
 
         private void LaunchApplications(ConfigurationFile config)
         {
-            Process mongo = new Process();
-            mongo.StartInfo.FileName = config.MongoAddress;
-            var current = Process.GetProcesses();
-            mongo.Start();
-            mongo.EnableRaisingEvents = true;
-            mongo.Exited += (sender, args) => { Console.WriteLine("mongo quitted"); };
+            MonitoredProcess mongo = new MonitoredProcess("MongoDB", config.MongoAddress,false);
             annelidaProcesses.Add(mongo);
-
-
-            //Process dispacher = new Process();
-            //dispacher.StartInfo.FileName = config.DispatcherAddress;
-            //try
-            //{
-            //    dispacher.Start();
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show("Dispatcher não econtrado.", "Erro", MessageBoxButton.OK,
-            //        MessageBoxImage.Error);
-            //    return;
-            //}
-            //annelidaProcesses.Add(dispacher);
-
-            //Process annelida3D = new Process();
-            //annelida3D.StartInfo.FileName = config.Annelida3DAddress;
-            //try
-            //{
-            //    annelida3D.Start();
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show("Annelida 3D não econtrado.", "Erro", MessageBoxButton.OK,
-            //        MessageBoxImage.Error);
-            //    return;
-            //}
-            //annelidaProcesses.Add(annelida3D);
-
-            //Process annelida2D = new Process();
-            //annelida2D.StartInfo.FileName = config.Annelida2DAddress;
-            //try
-            //{
-            //    annelida2D.Start();
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show("Annelida 32D não econtrado.", "Erro", MessageBoxButton.OK,
-            //        MessageBoxImage.Error);
-            //}
-            //annelidaProcesses.Add(annelida2D);
+            MonitoredProcess dispactcher = new MonitoredProcess("Dispatcher", config.DispatcherAddress,true);
+            annelidaProcesses.Add(dispactcher);
+            return;
+            MonitoredProcess annelida3D = new MonitoredProcess("Annelida 3D", config.Annelida3DAddress,false);
+            MonitoredProcess annelida2D = new MonitoredProcess("Annelida 2D", config.Annelida2DAddress,false);
+            return;
         }
+
     }
 }

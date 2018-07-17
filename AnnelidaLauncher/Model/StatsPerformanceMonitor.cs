@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
@@ -7,45 +8,61 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace AnnelidaLauncher.Model
 {
 
     public class StatsPerformanceMonitor
     {
-        private const int QUEUE_SIZE = 30;
-
-        private Dictionary<PerformanceCounter, CircularBuffer<double>> cpuUsage;
-        private Dictionary<PerformanceCounter, CircularBuffer<double>> ramUsage;
-
-
-
-        public StatsPerformanceMonitor(List<Process> processes)
+        private const double LOW_SD_THRES = 0.01;
+        private const double UPPER_SD_THRES = 3;
+        private readonly ICollection<MonitoredProcess> monitoredProcesses;
+        
+        public StatsPerformanceMonitor(ICollection<MonitoredProcess> monitoredProcesses)
         {
-            cpuUsage = new Dictionary<PerformanceCounter, CircularBuffer<double>>();
-
-            foreach(var proc in processes)
-            {
-                var queue = new CircularBuffer<double>(QUEUE_SIZE);
-                var name = Path.GetFileNameWithoutExtension(proc.ProcessName);
-                var counter = new PerformanceCounter("Process","% Processor Time", name, true);
-
-                cpuUsage.Add(counter, queue);
-            }
-
-            StoreCPU(new TimeSpan(0, 0, 0, 1), new CancellationToken(false));
+            this.monitoredProcesses = monitoredProcesses;
+            UpdateCPU(new TimeSpan(0, 0, 0, 0,500), new CancellationToken(false));
         }
 
-        private async Task StoreCPU(TimeSpan interval, CancellationToken cancellationToken)
+        private async Task UpdateCPU(TimeSpan interval, CancellationToken cancellationToken)
         {
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                foreach (var entry in cpuUsage)
+                foreach (var entry in monitoredProcesses)
                 {
-                   entry.Value.Enqueue(Math.Round(entry.Key.NextValue() / Environment.ProcessorCount, 2));
+                    entry.EnqueueCpuValue();
+                    if (!entry.TryGetSD(out var sd)) continue;
+                    if (sd > UPPER_SD_THRES && !entry.WasWarningRaised)
+                    {
+                        entry.WasWarningRaised = true;
+                        MessageBox.Show(
+                            $"A applicação {entry.FriendlyName} está se comportando fora do esperado. CPU SD={sd}",
+                            "Alerta!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else if( sd < UPPER_SD_THRES && entry.WasWarningRaised)
+                    {
+                        entry.WasWarningRaised = false;
+                    }
+
+                    Console.WriteLine(sd);
                 }
                 await Task.Delay(interval, cancellationToken);
             }
         }
+
+        private void PrintAverage(IEnumerable<double> buffer)
+        {
+            double avg = 0;
+            foreach (var entry in buffer)
+            {
+                avg += entry;
+            }
+
+            avg = avg / buffer.Count();
+
+            Console.WriteLine(avg);
+        }
+     
     }
 }

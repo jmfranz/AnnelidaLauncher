@@ -63,7 +63,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\CircularBuffer.cs" />
+    <Compile Include="Model\MonitoredProcess.cs" />
     <Compile Include="Model\StatsPerformanceMonitor.cs" />
+    <Compile Include="Model\WatchDogListener.cs" />
     <Compile Include="ViewModel\AnnelidaLauncherViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
