@@ -54,11 +54,7 @@ namespace AnnelidaLauncher.Model
             if (!shouldSendtoken) return;
             WatchDogTimer = new Timer(WatchDogTimerSeconds * 1000);
             WatchDogTimer.Elapsed += WatchDogTimerElapsed;
-        }
-
-        private void WatchDogTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            Console.WriteLine("timer elapsed");
+            WatchDogTimer.Start();
         }
 
         private void SetUpCounters()
@@ -88,6 +84,16 @@ namespace AnnelidaLauncher.Model
             WatchDogTimer.Interval = WatchDogTimerSeconds * 1000;
         }
 
+        //TODO: Add token to this
+        private void WatchDogTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            MessageBox.Show($"A aplicação {FriendlyName} não enviou um watchdog beacon a mais de " +
+                            $"{WatchDogTimerSeconds} segungos! Reiniciando", "Alerta!", MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            Process.Kill();
+            Process.Start();
+        }
+
         private double CalculateStdDev(IEnumerable<double> values)
         {
             double ret = 0;
@@ -103,6 +109,8 @@ namespace AnnelidaLauncher.Model
             return ret;
         }
 
+
+        //TODO: Clean on exit
         private void HandleApplicationQuit(object sender, EventArgs args)
         {
             MessageBox.Show($"A aplicação {FriendlyName} fechou! Abrindo novamente", "Alerta!", MessageBoxButton.OK,
